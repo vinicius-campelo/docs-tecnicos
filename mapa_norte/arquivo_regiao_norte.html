@@ -1,0 +1,580 @@
+<!--
+
+ * Mapas dinamicos (Microrregião norte Brasil)
+ * Map of regiao_norte
+ * 
+ * @author Vinicius Campelo
+ -->
+
+
+        <div class="mapcontainer">
+		
+		<h1>MICRORREGIÕES DO NORTE</h1>
+		
+            <div class="map">
+                <span>Alternative content for the map</span>
+            </div>
+            <div class="areaLegend"></div>
+            <div class="plotLegend"></div>
+        </div>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js" charset="utf-8"></script>
+		<script src="raphael.min.js" charset="utf-8"></script>
+		<script src="jquery.mapael.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="regiao_norte.js" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="regiao_norte.css">
+		
+		<script type="text/javascript">
+        $(function () {
+		
+		
+		  var test_plots = {
+                "boa_vista": {
+                    latitude: 70.2723039,
+                    longitude: 505.39000954,
+					
+                    tooltip: {
+                        content: "Roraima, o estado mais a norte do Brasil, é conhecido pela Floresta Amazónica. A capital, Boa Vista, na margem oeste de Rio Branco, fica próxima dos parques nacionais da Serra da Mocidade, a sudoeste, e do Monte Roraima, a norte. Com penhascos íngremes e um misterioso cume plano, o Monte Roraima, partilhado com a Venezuela e a Guiana, foi, presumivelmente, a inspiração de Sir Arthur Conan Doyle para O Mundo Perdido."
+                    },
+					text: {
+                            content: "Boa Vista",
+                            position: "bottom",
+                            attrs: {"font-size": 10, "font-weight": "bold", fill: "#004a9b", opacity: 0.6},
+                            attrsHover: {fill: "#004a9b", opacity: 1}}
+                },
+                "belem": {
+                    latitude: 205.689488,
+                    longitude: 855.691706,
+                    tooltip: {
+                        content: "Belém, capital do estado de Pará, é uma cidade portuária e a porta de entrada para a região do Baixo Amazonas do Brasil. Junto à Baía do Guajará, o bairro da Cidade Velha à beira-rio preserva a arquitetura colonial portuguesa, das igrejas e casas com azulejos coloridos a uma fortificação do século XVII conhecida como Forte do Castelo. Ver-o-Peso é um amplo mercado ao ar livre junto à água, onde se vende peixe, fruta e artesanato da Amazónia."
+                    },
+					text: {
+                            content: "Belém",
+                            position: "bottom",
+                            attrs: {"font-size": 10, "font-weight": "bold", fill: "#004a9b", opacity: 0.6},
+                            attrsHover: {fill: "#004a9b", opacity: 1}}
+					
+                },
+                
+                "manaus": {
+                    latitude: 280.689488,
+                    longitude: 515.691706,
+                    tooltip: {
+                        content: "Manaus, nos bancos do Rio Negro no noroeste do Brasil, é a capital do vasto estado do Amazonas. Trata-se de um ponto de partida importante próximo à Floresta Amazônica. A leste da cidade, o Rio Negro, escuro, converge para o Rio Solimões, barrento, resultando em um fenômeno visual incrível chamado de 'Encontro das Águas'. A combinação dos afluentes forma o Rio Amazonas."
+                    },
+					text: {
+                            content: "Manaus",
+                            position: "bottom",
+                            attrs: {"font-size": 10, "font-weight": "bold", fill: "#004a9b", opacity: 0.6},
+                            attrsHover: {fill: "#004a9b", opacity: 1}}
+					
+                },
+				
+				  "rio_branco": {
+                    x: 315,
+                    y: 458,
+                    tooltip: {
+                        content: "Acre é um estado no noroeste do Brasil, na Floresta Amazónica. É conhecido pela quantidade de árvores-da-borracha e castanhas-do-brasil. Na fronteira peruana, a oeste, o Parque Nacional da Serra do Divisor possui montanhas elevadas e várias quedas de água, além de diversas espécies animais, como tatus-gigantes, tapires e aves raras. A sudeste, encontra-se Rio Branco, a capital do estado, nas margens do rio Acre."
+                    },
+					text: {
+                            content: "Rio Branco",
+                            position: "bottom",
+                            attrs: {"font-size": 10, "font-weight": "bold", fill: "#004a9b", opacity: 0.6},
+                            attrsHover: {fill: "#004a9b", opacity: 1}}
+					
+                },
+				
+				  "porto_velho": {
+                    x: 382,
+                    y: 441,
+                    tooltip: {
+                        content: "Rondônia é um estado na região oeste do Brasil, na fronteira boliviana, conhecida pelas vastas extensões de floresta amazónica. No centro, fica o montanhoso Parque Nacional de Pacaás Novos. A oeste, as áreas florestais adicionais estão protegidas pelo Parque Nacional da Serra da Cutia e o Parque Estadual Guajará-Mirim. A norte, a capital do estado, Porto Velho, situa-se nas margens do rio Madeira."
+                    },
+					text: {
+                            content: "Porto Velho",
+                            position: "bottom",
+                            attrs: {"font-size": 10, "font-weight": "bold", fill: "#004a9b", opacity: 0.6},
+                            attrsHover: {fill: "#004a9b", opacity: 1}}
+					
+                },
+				
+				  "macapa": {
+                    x: 776,
+                    y: 165,
+                    tooltip: {
+                        content: "Amapá é um estado no norte do Brasil que faz fronteira com o Suriname, a Guiana Francesa e o Oceano Atlântico. A floresta amazónica abrange uma grande parte da sua área e o rio Oiapoque faz parte da sua fronteira a norte. No sul, a capital, Macapá, é conhecida pela Fortaleza de São José de Macapá, situada à beira-mar, um forte português do século XVIII, e pelo Monumento do Marco Zero, um obelisco que marca o equador."
+                    },
+					text: {
+                            content: "Macapá",
+                            position: "bottom",
+                            attrs: {"font-size": 10, "font-weight": "bold", fill: "#004a9b", opacity: 0.6},
+                            attrsHover: {fill: "#004a9b", opacity: 1}}
+					
+                },
+				
+				  "palmas": {
+                    x: 865,
+                    y: 468,
+                    tooltip: {
+                        content: "Amapá é um estado no norte do Brasil que faz fronteira com o Suriname, a Guiana Francesa e o Oceano Atlântico. A floresta amazónica abrange uma grande parte da sua área e o rio Oiapoque faz parte da sua fronteira a norte. No sul, a capital, Macapá, é conhecida pela Fortaleza de São José de Macapá, situada à beira-mar, um forte português do século XVIII, e pelo Monumento do Marco Zero, um obelisco que marca o equador."
+                    },
+					text: {
+                            content: "Palmas",
+                            position: "bottom",
+                            attrs: {"font-size": 10, "font-weight": "bold", fill: "#004a9b", opacity: 0.6},
+                            attrsHover: {fill: "#004a9b", opacity: 1}}
+					
+                }
+            };
+		
+		
+		
+		
+		
+		
+            $(".mapcontainer").mapael({
+                map: {
+                    // Set the name of the map to display
+                    name: "regiao_norte",
+					touch: true,
+					zoom: {
+                        enabled: true
+                    },
+                    defaultArea: {
+                        attrs: {
+                            stroke: "#fff",
+                            "stroke-width": 1
+                        },
+                        attrsHover: {
+                            "stroke-width": 2
+                        }
+                    }
+                }, legend: {
+                    area: {
+                        title: "Habitantes por Microrregião",
+                        slices: [
+                            {
+                                max: 100000,
+                                attrs: {
+                                    fill: "#00FF7F"
+                                },
+                                label: "Abaixo de 100.000 habitantes"
+                            },
+                            {
+                                min: 100000,
+                                max: 300000,
+                                attrs: {
+                                    fill: "#90EE90"
+                                },
+                                label: "Entre 100.000 a 300.000 mil habitantes"
+                            },
+                            {
+                                min: 300000,
+                                max: 500000,
+                                attrs: {
+                                    fill: "#32CD32"
+                                },
+                                label: "Entre 300.000 a 500.000 mil habitantes"
+                            },
+							 {
+                                min: 500000,
+                                max: 700000,
+                                attrs: {
+                                    fill: "#3CB371"
+                                },
+                                label: "Entre 500.000 a 700.000 mil habitantes"
+                            },
+							 {
+                                min: 700000,
+                                max: 1000000,
+                                attrs: {
+                                    fill: "#2E8B57"
+                                },
+                                label: "Entre 700.000 a 1000.000 de habitantes"
+                            },
+                            {
+                                min: 1000000,
+                                attrs: {
+                                    fill: "#006400"
+                                },
+                                label: "Acima de 1 milhão de habitantes"
+                            }
+                        ]
+                    }
+                }, areas: {
+				
+					   "path1": {
+                        value: 2142230,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Belém Capital</span><br />Microrregião: Metropolitana de Belém, 6 municípios, 2.142,230 habitantes, Área 3 130 km², Densidade 684,5 hab./km², Altitude 16 m."}},
+						
+						"path2": {
+                        value: 294978,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Castanhal</span><br />Microrregião: Metropolitana de Belém, 5 municípios, 294.978 habitantes, Área 3 761 km², Densidade 78,4 hab./km², Altitude 33 m."}},
+						
+						"path3": {
+                        value: "3",
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nord (59)</span><br />Microrregião: 3"}},
+						
+						"path4": {
+                        value: 247138,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Salgado</span><br />Microrregião: Nordeste Paraense, 11 municípios, 247.138 habitantes, Área 5 888 km², Densidade 42,0 hab./km², Altitude 18 m."}},
+						
+						"path5": {
+                        value: "5",
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nord (59)</span><br />Microrregião: 5"}},
+						
+						"path6": {
+                        value: "6",
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nord (59)</span><br />Microrregião: 6"}},
+						
+						"path7": {
+                        value: "7",
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nord (59)</span><br />Microrregião: 7"}},
+						
+						"path8": {
+                        value: 382908,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Bragantina</span><br />Microrregião: Nordeste Paraense, 13 municípios, 382.908 habitantes, Área 8 797 km², Densidade 43,5 hab./km², Altitude 32 m."}},
+						
+						"path9": {
+                        value: "9",
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nord (59)</span><br />Microrregião: 9"}},
+						
+						"path10": {
+                        value: 437264,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Cametá</span><br />Microrregião: Nordeste Paraense, 7 municípios, 437.264 habitantes, Área 16 660 km², Densidade 26,2 hab./km², Altitude 14 m."}},
+						
+						"path11": {
+                        value: 287614,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Tomé-Açu</span><br />Microrregião: Nordeste Paraense, 5 municípios, 287.614 habitantes, Área 23 704 km², Densidade 12,1 hab./km², Altitude 27 m."}},
+						
+						"path12": {
+                        value: "12",
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nord (59)</span><br />Microrregião: 12"}},
+						
+						"path13": {
+                        value: "13",
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nord (59)</span><br />Microrregião: 13"}},
+						
+						"path14": {
+                        value: 434556,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Guamá</span><br />Microrregião: Nordeste Paraense, 13 municípios, 434.556 habitantes, Área 28 267 km², Densidade 15,4 hab./km², Altitude 39 m."}},
+						
+						"path15": {
+                        value: 209281,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Itaituba</span><br />Microrregião: Sudoeste Paraense, 6 municípios, 209.281 habitantes, Área 189 592 km², Densidade 1,1 hab./km², Altitude 100 m."}},
+						
+						"path16": {
+                        value: 274069,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Altamira</span><br />Microrregião: Sudoeste Paraense, 8 municípios, 274.069 habitantes, Área 226 197 km², Densidade 1,2 hab./km², Altitude 110 m."}},
+						
+						"path17": {
+                        value: 328877,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Tucuruí</span><br />Microrregião: Sudeste Paraense, 6 municípios, 328.877 habitantes, Área 32 879 km², Densidade 10,0 hab./km², Altitude 94 m."}},
+						
+						"path18": {
+                        value: 291969,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Paragominas</span><br />Microrregião: Sudeste Paraense, 7 municípios, 291.969 habitantes, Área 48 400 km², Densidade 6,0 hab./km², Altitude 144 m."}},
+						
+						"path19": {
+                        value: 166286,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">São Félix do Xingu</span><br />Microrregião: Sudeste Paraense, 5 municípios, 166.286 habitantes, Área 121 107 km², Densidade 1,4 hab./km², Altitude 250 m."}},
+						
+						"path20": {
+                        value: 255725,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Parauapebas</span><br />Microrregião: Sudeste Paraense, 5 municípios, 255.725 habitantes, Área 22 543 km², Densidade 11,3 hab./km², Altitude 207 m."}},
+						
+						"path21": {
+                        value: 284746,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Marabá</span><br />Microrregião: Sudeste Paraense, 5 municípios, 284.746 habitantes, Área 20 074 km², Densidade 14,2 hab./km², Altitude 129 m."}},
+						
+						"path22": {
+                        value: 183136,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Redenção</span><br />Microrregião: Sudeste Paraense, 7 municípios, 183.136 habitantes, Área 21 168 km², Densidade 8,7 hab./km², Altitude 205 m."}},
+						
+						"path23": {
+                        value: 136684,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Conceição do Araguaia</span><br />Microrregião: Sudeste Paraense, 4 municípios, 136.684 habitantes, Área 31 195 km², Densidade 4,4 hab./km², Altitude 179 m."}},
+						
+						"path24": {
+                        value: 538350,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Porto Velho</span><br />Microrregião: Madeira-Guaporé, 7 municípios, 538.350 habitantes, Área 65 665 km², Densidade 8,2 hab./km², Altitude 146 m."}},
+						
+						"path25": {
+                        value: 71359,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Guajará-Mirim</span><br />Microrregião: Madeira-Guaporé, 3 municípios, 71.359 habitantes, Área 40 803 km², Densidade 1,7 hab./km², Altitude 162 m."}},
+						
+						"path26": {
+                        value: 171150,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Ariquemes</span><br />Microrregião: Leste Rondoniense, 7 municípios, 171.150 habitantes, Área 24 334 km², Densidade 7,0 hab./km², Altitude 152 m."}},
+						
+						"path27": {
+                        value: 295461,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Ji-Paraná</span><br />Microrregião: Leste Rondoniense, 11 municípios, 295.461 habitantes, Área 25 091 km², Densidade 11,8 hab./km², Altitude 195 m."}},
+						
+						"path28": {
+                        value: 70191,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Alvorada D'Oeste</span><br />Microrregião: Leste Rondoniense, 4 municípios, 70.191 habitantes, Área 15 966 km², Densidade 4,4 hab./km², Altitude 223 m."}},
+						
+						"path29": {
+                        value: 228242,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Cacoal</span><br />Microrregião: Leste Rondoniense, 9 municípios, 228.242 habitantes, Área 24 526 km², Densidade 9,3 hab./km², Altitude 266 m."}},
+						
+						"path30": {
+                        value: 132680,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Vilhena</span><br />Microrregião: Leste Rondoniense, 6 municípios, 132.680 habitantes, Área 26 583 km², Densidade 5,0 hab./km², Altitude 319 m."}},
+						
+						"path31": {
+                        value: 53032,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Colorado do Oeste</span><br />Microrregião: Leste Rondoniense, 5 municípios, 53.032 habitantes, Área 14 624 km², Densidade 3,6 hab./km², Altitude 276 m."}},
+						
+						"path32": {
+                        value: 320466,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Boa Vista</span><br />Microrregião: Norte de Roraima, 4 municípios, 320.466 habitantes, Área 67 755 km², Densidade 4,7 hab./km², Altitude 178 m."}},
+						
+						"path33": {
+                        value: 41808,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nordeste de Roraima</span><br />Microrregião: Norte de Roraima, 4 municípios, 41.808 habitantes, Área 30 793 km², Densidade 1,4 hab./km², Altitude 240 m."}},
+						
+						"path34": {
+                        value: 41852,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Caracaraí</span><br />Microrregião: Sul de Roraima, 3 municípios, 41.852 habitantes, Área 74 282 km², Densidade 0,6 hab./km², Altitude 63 m."}},
+						
+						"path35": {
+                        value: 45912,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Sudeste de Roraima</span><br />Microrregião: Sul de Roraima, 4 municípios, 45.912 habitantes, Área 51 472 km², Densidade 0,9 hab./km², Altitude 113 m."}},
+						
+						"path36": {
+                        value: 196365,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Bico do Papagaio</span><br />Microrregião: Ocidental do Tocantins, 25 municípios, 196.365 habitantes, Área 15 768 km², Densidade 12,5 hab./km², Altitude 176 m."}},
+						
+						"path37": {
+                        value: 278706,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Araguaína</span><br />Microrregião: Ocidental do Tocantins, 17 municípios, 278.706 habitantes, Área 26 440 km², Densidade 10,5 hab./km², Altitude 212 m."}},
+						
+						"path38": {
+                        value: 142304,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Miracema do Tocantins</span><br />Microrregião: Ocidental do Tocantins, 24 municípios, 142.304 habitantes, Área 34 776 km², Densidade 4,1 hab./km², Altitude 233 m."}},
+						
+						"path39": {
+                        value: 116017,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Rio Formoso</span><br />Microrregião: Ocidental do Tocantins, 13 municípios, 116.017 habitantes, Área 51 406 km², Densidade 2,3 hab./km², Altitude 279 m."}},
+						
+						"path40": {
+                        value: 137223,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Gurupi</span><br />Microrregião: Ocidental do Tocantins, 14 municípios, 137.223 habitantes, Área 27 445 km², Densidade 5,0 hab./km², Altitude 295 m."}},
+						
+						"path41": {
+                        value: 322789,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Porto Nacional</span><br />Microrregião: Oriental do Tocantins, 11 municípios, 322.789 habitantes, Área 21 198 km², Densidade 15,2 hab./km², Altitude 238 m."}},
+						
+						"path42": {
+                        value: 71930,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Jalapão</span><br />Microrregião: Oriental do Tocantins, 15 municípios, 71.930 habitantes, Área 53 408 km², Densidade 1,3 hab./km², Altitude 301 m."}},
+						
+						"path43": {
+                        value: 118110,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Dianópolis</span><br />Microrregião: Oriental do Tocantins, 20 municípios, 118.110 habitantes, Área 47 181 km², Densidade 2,5 hab./km², Altitude 464 m."}},
+						
+						"path44": {
+                        value: 131415,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Cruzeiro do Sul</span><br />Microrregião: Vale do Juruá, 5 municípios, 131.415 habitantes, Área 31 945 km², Densidade 4,1 hab./km², Altitude 204 m."}},
+						
+						"path45": {
+                        value: 74579,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Tarauacá</span><br />Microrregião: Vale do Juruá, 3 municípios, 74.579 habitantes, Área 53 503 km², Densidade 1,4 hab./km², Altitude 223 m."}},
+						
+						"path46": {
+                        value: "46",
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nord (59)</span><br />Microrregião: 46"}},
+						
+						"path47": {
+                        value: 418113,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Rio Branco</span><br />Microrregião: Vale do Acre, 7 municípios, 418.113 habitantes, Área 22 250 km², Densidade 18,8 hab./km², Altitude 168 m."}},
+						
+						"path48": {
+                        value: 58661,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Brasiléia</span><br />Microrregião: Vale do Acre, 4 municípios, 58.661 habitantes, Área 15 893 km², Densidade 3,7 hab./km², Altitude 196 m."}},
+						
+						"path49": {
+                        value: 96540,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Rio Negro</span><br />Microrregião: Norte Amazonense, 4 municípios, 96.540 habitantes, Área 332 277 km², Densidade 0,3 hab./km², Altitude 68 m."}},
+						
+						"path50": {
+                        value: 24854,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Japurá</span><br />Microrregião: Norte Amazonense, 2 municípios, 24.854 habitantes, Área 72 702 km², Densidade 0,3 hab./km², Altitude 72 m."}},
+						
+						"path51": {
+                        value: 223942,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Alto Solimões</span><br />Microrregião: Sudoeste Amazonense, 9 municípios, 223.942 habitantes, Área 213 278 km², Densidade 1,1 hab./km², Altitude 69 m."}},
+						
+						"path52": {
+                        value: 127791,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Juruá</span><br />Microrregião: Sudoeste Amazonense, 7 municípios, 127.791 habitantes, Área 112 580 km², Densidade 1,1 hab./km², Altitude 99 m."}},
+						
+						"path53": {
+                        value: 87432,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Tefé</span><br />Microrregião: Centro Amazonense, 3 municípios, 87.432 habitantes, Área 39 863 km², Densidade 2,2 hab./km², Altitude 46 m."}},
+						
+						"path54": {
+                        value: 152010,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Coari</span><br />Microrregião: Centro Amazonense, 6 municípios, 152.010 habitantes, Área 111 590 km², Densidade 1,4 hab./km², Altitude 35 m."}},
+						
+						"path55": {
+                        value: 2039493,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Manaus</span><br />Microrregião: Centro Amazonense, 7 municípios, 2.039,493 habitantes, Área 41 243 km², Densidade 49,5 hab./km², Altitude 34 m."}},
+						
+						"path56": {
+                        value: "56",
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Nord (59)</span><br />Microrregião: 56"}},
+						
+						"path57": {
+                        value: 52879,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Rio Preto da Eva</span><br />Microrregião: Centro Amazonense, 2 municípios, 52.879 habitantes, Área 31 235 km², Densidade 1,7 hab./km², Altitude 71 m."}},
+						
+						"path58": {
+                        value: 152027,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Itacoatiara</span><br />Microrregião: Centro Amazonense, 5 municípios, 152.027 habitantes, Área 25 387 km², Densidade 6,0 hab./km², Altitude 23 m."}},
+						
+						"path59": {
+                        value: 242628,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Parintins</span><br />Microrregião: Centro Amazonense, 7 municípios, 242.628 habitantes, Área 107 030 km², Densidade 2,3 hab./km², Altitude -10 m."}},
+						
+						"path60": {
+                        value: 48785,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Boca do Acre</span><br />Microrregião: Sul Amazonense, 2 municípios, 48.785 habitantes, Área 63 563 km², Densidade 0,8 hab./km², Altitude 95 m."}},
+						
+						"path61": {
+                        value: 69516,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Purus</span><br />Microrregião: Sul Amazonense, 3 municípios, 69.516 habitantes, Área 187 379 km², Densidade 0,4 hab./km², Altitude 50 m."}},
+						
+						"path62": {
+                        value: 169594,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Madeira</span><br />Microrregião: Sul Amazonense, 5 municípios, 169.594 habitantes, Área 221 035 km², Densidade 0,8 hab./km², Altitude 56 m."}},
+						
+						"path63": {
+                        value: 29426,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Oiapoque</span><br />Microrregião: Norte do Amapá, 2 municípios, 29.426 habitantes, Área 36 894 km², Densidade 0,8 hab./km², Altitude 23 m."}},
+						
+						"path64": {
+                        value: 24425,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Amapá</span><br />Microrregião: Norte do Amapá, 3 municípios, 24.425 habitantes, Área 20 842 km², Densidade 1,2 hab./km², Altitude 13 m."}},
+						
+						"path65": {
+                        value: 545853,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Macapá</span><br />Microrregião: Sul do Amapá, 8 municípios, 545.853 habitantes, Área 38 506 km², Densidade 14,2 hab./km², Altitude 45 m."}},
+						
+						"path66": {
+                        value: 69419,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Mazagão</span><br />Microrregião: Sul do Amapá, 3 municípios, 69.419 habitantes, Área 46 586 km², Densidade 1,5 hab./km², Altitude 8 m."}},
+						
+						"path67": {
+                        value: 184343,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">óbidos</span><br />Microrregião: Baixo Amazonas, 5 municípios, 184.343 habitantes, Área 157 597 km², Densidade 1,2 hab./km², Altitude 74 m."}},
+						
+						"path68": {
+                        value: 484723,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Santarém</span><br />Microrregião: Baixo Amazonas, 7 municípios, 484.723 habitantes, Área 92 474 km², Densidade 5,2 hab./km², Altitude 64 m."}},
+						
+						"path69": {
+                        value: 67565,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Almeirim</span><br />Microrregião: Baixo Amazonas, 2 municípios, 67.565 habitantes, Área 90 378 km², Densidade 0,7 hab./km², Altitude 22 m."}},
+						
+						"path70": {
+                        value: 129900,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Portel</span><br />Microrregião: Marajó, 4 municípios, 129.900 habitantes, Área 45 096 km², Densidade 2,9 hab./km², Altitude 20 m."}},
+						
+						"path71": {
+                        value: 204114,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Furos de Breves</span><br />Microrregião: Marajó, 5 municípios, 204.114 habitantes, Área 30 094 km², Densidade 6,8 hab./km², Altitude 16 m."}},
+						
+						"path72": {
+                        value: 153156,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Arari</span><br />Microrregião: Marajó, 7 municípios, 153.156 habitantes, Área 28 949 km², Densidade 5,3 hab./km², Altitude 10 m."}},
+						
+						"path73": {
+                        value: 50701,
+                        href: "#",
+                        tooltip: {content: "<span style=\"font-weight:bold;\">Sena Madureira</span><br />Microrregião: Vale do Acre, 3 municípios, 50.701 habitantes, Área 40 531 km², Densidade 1,3 hab./km², Altitude 161 m"}}
+						
+						
+			    }, plots: test_plots  // Add some plots on the map
+                
+                    
+                	
+		    });
+        });
+    </script>
+
